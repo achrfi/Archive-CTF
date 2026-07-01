@@ -1,0 +1,5 @@
+Reminders:
+- Buy Grape Oki Jeli Drink
+- Study for the finals tomorrow
+- Assembly key clue: Gboard dictionary word + '_' + DB WAL value + '_' + Chrome raw paste URL
+- Decrypt combined key with ASCII offset -1 (ignore underscores)

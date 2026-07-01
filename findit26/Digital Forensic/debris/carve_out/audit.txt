@@ -1,0 +1,23 @@
+Foremost version 1.5.7 by Jesse Kornblum, Kris Kendall, and Nick Mikus
+Audit File
+
+Foremost started at Sat May  2 14:28:23 2026
+Invocation: foremost -i chall.img -o carve_out 
+Output directory: /home/ryrexz/CTF/findit26/Digital Forensic/debris/carve_out
+Configuration file: /etc/foremost.conf
+------------------------------------------------------------------
+File: chall.img
+Start: Sat May  2 14:28:23 2026
+Length: 20 MB (20971520 bytes)
+ 
+Num	 Name (bs=512)	       Size	 File Offset	 Comment 
+
+0:	00019460.zip 	       1 KB 	    9963520 	 
+Finish: Sat May  2 14:28:23 2026
+
+1 FILES EXTRACTED
+	
+zip:= 1
+------------------------------------------------------------------
+
+Foremost finished at Sat May  2 14:28:23 2026

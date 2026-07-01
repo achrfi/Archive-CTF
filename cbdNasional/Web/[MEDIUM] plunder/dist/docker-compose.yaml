@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  plunderer:
+    image: php:8.2-apache
+    restart: always
+    volumes:
+      - ./src:/var/www
+      - ./proxy.conf:/etc/apache2/sites-available/000-default.conf
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+    command: bash -c "a2enmod proxy proxy_http && apache2-foreground"
+    depends_on:
+      - bot
+    ports:
+      - 2312:80
+  bot:
+    platform: linux/amd64
+    build:
+      context: bot
+      args:
+        - BROWSER=chromium
+    restart: always
+    environment:
+      APPNAME: Admin
+      APPURL: http://proxy/
+      APPURLREGEX: ^http(|s)://.*$
+      APPFLAG: CBC{redacted}
+      APPLIMIT: 10
+      APPLIMITTIME: 60
+      USE_PROXY: 1
+      DISPLAY: ${DISPLAY}
+

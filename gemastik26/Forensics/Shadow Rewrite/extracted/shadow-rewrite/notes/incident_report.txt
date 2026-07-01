@@ -1,0 +1,13 @@
+INCIDENT SNAPSHOT: tult-0615-foresty
+Collected by: Lab Foresty Incident Response Desk
+Collection date: 2026-04-18 09:05 WIB
+
+Summary:
+- Pemilik akun labadmin melaporkan tidak bisa login ke workstation Lab TULT 0615 setelah dini hari.
+- Salinan auth.log menunjukkan command `passwd labadmin` dijalankan melalui sudo.
+- Artefak shadow yang disita saat containment menunjukkan hash milik labadmin sekarang memakai bcrypt.
+- Artefak lama juga memuat beberapa akun lain dengan hash bcrypt hasil rotasi maintenance rutin Lab Foresty.
+- Tidak ditemukan plaintext password baru milik korban pada artefak lain yang disita.
+
+Primary question for responders:
+- Password apa yang saat ini terpasang pada akun labadmin?

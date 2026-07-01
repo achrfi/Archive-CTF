@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Search · Ponder GIFs{% endblock %}
+
+{% block content %}
+  {% if single_match %}
+    <script>
+        setTimeout(() => {
+            location={{ url_for('gifs.raw', gif_id=matches[0]['id']) | tojson }}
+        }, 1000);
+     </script>
+  {% endif %}
+
+  <section class="panel">
+    <h1>Search</h1>
+      <form method="get" class="search-bar">
+        <input id="search" name="q" value="{{ query }}" placeholder="Search title or filename" required>
+        <button type="submit">Search</button>
+      </form>
+  </section>
+
+  {% if query %}
+    <section>
+      <h2>GIF matches</h2>
+      {% if matches %}
+        {% for image in matches %}
+          <div class="single-result">
+            <img src="{{ url_for('gifs.raw', gif_id=image['id']) }}" alt="{{ image['title'] }}">
+            <div>
+              <h3>{{ image["title"] }}</h3>
+              <p>{{ image["original_filename"] }}</p>
+              <p>{{ image["username"] }}</p>
+            </div>
+          </div>
+        {%endfor%}
+      {% else %}
+        <p class="empty">No GIF or image matched that search.</p>
+      {% endif %}
+    </section>
+  {% endif %}
+{% endblock %}

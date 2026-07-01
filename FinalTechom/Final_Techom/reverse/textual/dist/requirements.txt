@@ -1,0 +1,8 @@
+# Cryptography library for RSA encryption
+cryptography>=41.0.0
+
+# Textual TUI framework for the chat interface
+textual>=0.47.0
+
+# Rich for enhanced terminal output (dependency of textual)
+rich>=13.0.0

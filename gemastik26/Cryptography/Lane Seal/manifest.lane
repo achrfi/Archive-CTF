@@ -1,0 +1,27 @@
+LANE-SEAL-MANIFEST/1
+
+counter:
+  nc lane-seal-ctf.<challenge-domain> 8095
+
+local:
+  nc localhost 8095
+
+request:
+  Send one closed lane frame as hex.
+
+frame:
+  lane id   : 8 bytes
+  gate text : 16 bytes
+  cargo box : 16 bytes
+  seal      : 16 bytes
+
+qa:
+  The capture has two old frames that cleared the west lane.
+  QA printed their cargo text before the kiosk was moved.
+
+new lane:
+  The private cargo lane expects this text:
+  cargo=9999;adm!!
+
+files:
+  capture.lane contains the old cleared frames.

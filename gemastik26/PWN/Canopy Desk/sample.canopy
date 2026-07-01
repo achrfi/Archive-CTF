@@ -1,0 +1,5 @@
+# A small valid route program.
+movi r0, 0
+dump r0, 24
+halt
+END

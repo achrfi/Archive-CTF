@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Upload · Ponder GIFs{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <h1>Upload GIF or image</h1>
+    <form method="post" enctype="multipart/form-data" class="form-stack">
+      <label>
+        Title
+        <input name="title" required>
+      </label>
+      <label>
+        Image file
+        <input type="file" name="image" accept="image/gif,image/png,image/jpeg,image/webp" required>
+        <span class="hint">Maximum file size: 1 MB.</span>
+      </label>
+      <button type="submit">Upload</button>
+    </form>
+  </section>
+{% endblock %}

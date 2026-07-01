@@ -1,0 +1,12 @@
+.venv/
+webapp/.venv/
+__pycache__/
+*.py[cod]
+.git/
+.gitignore
+instance/
+webapp/instance/
+tests/
+README.md
+Dockerfile
+docker-compose.yml

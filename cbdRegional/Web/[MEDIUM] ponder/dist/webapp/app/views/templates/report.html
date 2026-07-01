@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Report · Ponder GIFs{% endblock %}
+
+{% block content %}
+  <section class="panel auth-panel">
+    <h1>Report URL</h1>
+    <form method="post" class="form-stack">
+      <label>
+        URL
+        <input type="url" name="url" value="{{ url }}" placeholder="http://example.com/path" required>
+      </label>
+      <button type="submit">Report</button>
+    </form>
+  </section>
+{% endblock %}

@@ -1,0 +1,6 @@
+Pernyataan korban:
+
+"Saya admin Lab Foresty di TULT 0615, jadi akun Linux saya pakai sudo. Setelah shift malam saya selesai,
+besok paginya login saya sudah ditolak. Saya tidak pernah mencatat password aktif
+di file teks, jadi satu-satunya petunjuk yang saya punya tinggal artefak sistem
+yang sempat disita tim IR."

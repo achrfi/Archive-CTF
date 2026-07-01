@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<WifiConfigStoreData><NetworkList><Network><SSID>"OKI_JELI_5G"</SSID><KeyMgmt>WPA_PSK</KeyMgmt></Network><Network><SSID>"ALE_ALE_FREE_WIFI"</SSID><KeyMgmt>NONE</KeyMgmt></Network><Network><SSID>"UNIVERSITY_LIBRARY_WIFI"</SSID><KeyMgmt>WPA_EAP</KeyMgmt></Network></NetworkList></WifiConfigStoreData>

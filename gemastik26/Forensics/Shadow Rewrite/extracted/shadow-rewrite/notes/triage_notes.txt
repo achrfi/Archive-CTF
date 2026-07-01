@@ -1,0 +1,7 @@
+Triage notes - junior analyst scratchpad
+
+- `shadow` saat ini memuat beberapa hash bcrypt: labadmin, operator, forest, dan maint.
+- `shadow-` juga masih ada, tapi itu file backup lama. Jangan asumsi semua entri di sana relevan ke insiden Apr 18.
+- `auth.log.1` berisi activity maintenance mingguan dan rotasi password akun lain.
+- Timeline insiden yang dilaporkan korban tetap berpusat pada kegagalan login akun labadmin setelah sesi SSH dini hari.
+- Jika bingung, prioritaskan korelasi waktu kejadian dibanding sekadar memilih entri hash yang paling mencolok.

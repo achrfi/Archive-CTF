@@ -1,0 +1,9 @@
+<article class="image-card">
+  <a href="{{ url_for('gifs.raw', gif_id=image['id']) }}" target="_blank" rel="noreferrer">
+    <img src="{{ url_for('gifs.raw', gif_id=image['id']) }}" alt="{{ image['title'] }}">
+  </a>
+  <div class="image-meta">
+    <strong>{{ image["title"] }}</strong>
+    <span>{{ image["username"] }}</span>
+  </div>
+</article>

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sl0o0o0w</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <h1>Do you have the suitable image?</h1>
+      <p>
+        Upload an image
+      </p>
+
+      <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" />
+      <button id="runBtn" type="button">Validate</button>
+
+      <pre id="status"></pre>
+      <canvas id="canvas" hidden></canvas>
+    </main>
+
+    <script src="config.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

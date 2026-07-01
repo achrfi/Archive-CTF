@@ -1,0 +1,22 @@
+These are QA notes from the old counter. They are only examples of the wire format.
+
+sample_0:
+mode=probe
+receipt_left=2
+receipt_right=17cdded89f330add
+stub=7d504136077e
+
+sample_1:
+mode=probe
+receipt_left=61137e022b4fd43
+receipt_right=148ff78834ebdbf1
+stub=c83a976c4587
+
+sample_2:
+mode=probe
+receipt_left=17118476f17e818a
+receipt_right=4e8db36a718138
+stub=23707200c29c
+
+QA warning:
+The counter only checks that a receipt line fits in the printed range.

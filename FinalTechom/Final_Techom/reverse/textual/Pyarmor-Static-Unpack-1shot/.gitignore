@@ -1,0 +1,13 @@
+*.swp
+*.swo
+*.gcno
+*.gcda
+*.kdev4
+/.kdev4
+__pycache__
+tests-out
+build/
+.vscode/
+
+pyarmor-1shot
+pyarmor-1shot.exe

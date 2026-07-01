@@ -1,0 +1,33 @@
+# Virtual environment
+venv/
+.venv/
+
+# Git repositories di dalam repo
+tools/
+
+# Large CTF artifacts
+*.img
+*.ext4
+*.qcow2
+*.vmdk
+*.vdi
+*.iso
+
+# Installer
+*.sh
+
+# Wordlists
+rockyou.txt
+
+# Large archives
+*.zip
+*.7z
+*.rar
+
+# APK
+*.apk
+
+# Build output
+output
+
+Dumper.py

@@ -1,0 +1,13 @@
+LANE-SEAL-CAPTURE/1
+lane=776573742d303137
+gate=676174653d30323b73686966743d4121
+
+[cleared-001]
+qa_cargo=cargo=0001;ok!!!
+cargo_box=8981590fb4879276747fc40dab33db06
+seal=d79855c2433cf9a70f469b69e153b15d
+
+[cleared-002]
+qa_cargo=cargo=0002;ok!!!
+cargo_box=8981590fb4879276747cc40dab33db06
+seal=1b8fa4b6f7f6fa4f69fa73cf2c290bb4

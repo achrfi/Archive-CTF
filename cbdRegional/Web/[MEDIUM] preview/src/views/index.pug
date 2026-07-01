@@ -1,0 +1,254 @@
+doctype html
+html
+  head
+    title Preview Workspace
+    style.
+      body {
+        font-family: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(168, 85, 247, 0.08), transparent 30%),
+          linear-gradient(180deg, #eef2f7 0%, #e2e8f0 100%);
+        margin: 0;
+        min-height: 100vh;
+        color: #102a43;
+      }
+
+      main {
+        width: min(1120px, calc(100% - 48px));
+        margin: 0 auto;
+        padding: 36px 0 64px;
+      }
+
+      h1, h2 {
+        margin-top: 0;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 3vw, 2.9rem);
+        letter-spacing: -0.04em;
+      }
+
+      h2 {
+        font-size: 1rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #486581;
+      }
+
+      .hero {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        align-items: end;
+        margin-bottom: 24px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(72, 101, 129, 0.18);
+        color: #334e68;
+        font-size: 0.76rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .hero p {
+        max-width: 700px;
+        margin: 10px 0 0;
+        font-size: 1.02rem;
+        line-height: 1.6;
+        color: #486581;
+      }
+
+      .status {
+        min-width: 220px;
+        padding: 18px 20px;
+        border-radius: 18px;
+        background: #0f172a;
+        color: #d9e2ec;
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.22);
+      }
+
+      .status strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 0.82rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #9fb3c8;
+      }
+
+      .status span {
+        display: block;
+        font-size: 1.25rem;
+      }
+
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .metric {
+        padding: 18px 20px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(72, 101, 129, 0.14);
+      }
+
+      .metric strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #627d98;
+      }
+
+      .metric span {
+        font-size: 1.05rem;
+        color: #243b53;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+        gap: 24px;
+      }
+
+      .panel {
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(31, 41, 51, 0.08);
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
+        backdrop-filter: blur(8px);
+      }
+
+      .panel p {
+        color: #52606d;
+        line-height: 1.6;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 0.82rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #627d98;
+      }
+
+      textarea, button, iframe {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      textarea {
+        min-height: 280px;
+        resize: vertical;
+        border: 1px solid #bcccdc;
+        border-radius: 14px;
+        padding: 16px;
+        font: 14px/1.6 'IBM Plex Mono', 'Courier New', monospace;
+        background: #f8fafc;
+        color: #243b53;
+      }
+
+      button {
+        margin-top: 16px;
+        border: none;
+        border-radius: 999px;
+        padding: 14px 18px;
+        background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%);
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        box-shadow: 0 12px 24px rgba(29, 78, 216, 0.2);
+      }
+
+      .error {
+        background: #fff7ed;
+        border: 1px solid #fdba74;
+        color: #9a3412;
+        border-radius: 12px;
+        padding: 12px 14px;
+        margin-bottom: 16px;
+      }
+
+      iframe {
+        min-height: 420px;
+        border: 1px solid #d9e2ec;
+        border-radius: 14px;
+        background: white;
+      }
+
+      .preview-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .preview-head p {
+        margin: 0;
+        font-size: 0.95rem;
+      }
+
+      @media (max-width: 860px) {
+        .hero {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+  body
+    main
+      .hero
+        div
+          .eyebrow Preview Workspace
+          h1 Page Preview
+          p Review a draft page before it is published. Update the headline placeholder and generate a fresh preview to validate the final layout and markup.
+        .status
+          strong Workspace Status
+          span Draft Preview
+      .summary
+        .metric
+          strong Workspace
+          span Content Preview
+        .metric
+          strong Target Page
+          span Landing Page
+        .metric
+          strong Template Revision
+          span Revision 14
+      .layout
+        section.panel
+          h2 Content Editor
+          p Update the placeholder value used in the current page template, then generate a fresh preview.
+          if error
+            .error= error
+          form(method='POST', action='/preview')
+            label(for='name') Page Title
+            textarea#name(name='name' required spellcheck='false')= name
+            button(type='submit') Generate Preview
+        section.panel
+          .preview-head
+            div
+              h2 Preview Output
+              p Live render of the current page draft.
+          if renderedHtml
+            iframe(srcdoc=renderedHtml sandbox='allow-same-origin')
+          else
+            p The preview panel will appear here after the next render.

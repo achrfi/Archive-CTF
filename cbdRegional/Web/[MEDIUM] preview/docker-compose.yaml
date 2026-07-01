@@ -1,0 +1,7 @@
+services:
+  app:
+    build: .
+    container_name: preview-app
+    restart: always
+    ports:
+      - "${PROXY_PUBLIC_PORT:-8081}:3000"

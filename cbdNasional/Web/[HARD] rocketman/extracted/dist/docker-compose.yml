@@ -1,0 +1,44 @@
+services:  
+  wp_service_1:
+    depends_on:
+      - wp_service_1_db
+    volumes:
+      - ./wordpress:/var/www/html
+    build: .
+    deploy:
+      resources:
+        reservations:
+          cpus: '0.5'
+          memory: 1024M
+        limits:
+          cpus: '1.0'
+          memory: 2048M
+    ports:
+      - 9100:9100
+  wp_service_1_db:
+    image: mysql:5.7
+    restart: always
+    env_file: .env
+
+  wp_service_1_toolbox:
+    build:
+      context: .
+      dockerfile: ./docker/wordpress/toolbox/Dockerfile
+    volumes:
+      - ./wordpress:/var/www/html
+    working_dir: /var/www/html
+    depends_on:
+      - wp_service_1_db
+    env_file: .env
+    environment:
+      - CHALL_SERVER_URL=${CHALL_SERVER_URL}
+
+  bot:
+    build: ./bot
+    network_mode: service:wp_service_1
+    depends_on:
+      - wp_service_1
+    env_file: .env
+    environment:
+      - PORT=3000
+      - CHALL_SERVER_URL=${CHALL_SERVER_URL}

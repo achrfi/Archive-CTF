@@ -1,0 +1,15 @@
+Apr 18 01:06:44 tult-0615-foresty systemd-logind[611]: New session 19 of user labadmin.
+Apr 18 01:06:46 tult-0615-foresty sshd[1483]: Accepted password for labadmin from 10.17.44.23 port 49822 ssh2
+Apr 18 01:06:47 tult-0615-foresty sshd[1483]: pam_unix(sshd:session): session opened for user labadmin(uid=1000) by (uid=0)
+Apr 18 01:07:11 tult-0615-foresty sudo:   labadmin : TTY=pts/0 ; PWD=/home/labadmin ; USER=root ; COMMAND=/usr/bin/passwd labadmin
+Apr 18 01:07:11 tult-0615-foresty sudo: pam_unix(sudo:session): session opened for user root(uid=0) by labadmin(uid=1000)
+Apr 18 01:07:14 tult-0615-foresty passwd[1510]: password for 'labadmin' changed by root
+Apr 18 01:07:15 tult-0615-foresty sudo: pam_unix(sudo:session): session closed for user root
+Apr 18 01:07:21 tult-0615-foresty sshd[1483]: Received disconnect from 10.17.44.23 port 49822:11: disconnected by user
+Apr 18 01:07:21 tult-0615-foresty sshd[1483]: Disconnected from user labadmin 10.17.44.23 port 49822
+Apr 18 08:11:53 tult-0615-foresty sshd[2440]: Failed password for labadmin from 10.17.10.8 port 50011 ssh2
+Apr 18 08:12:05 tult-0615-foresty sshd[2440]: Failed password for labadmin from 10.17.10.8 port 50011 ssh2
+Apr 18 08:12:17 tult-0615-foresty sshd[2440]: Connection closed by authenticating user labadmin 10.17.10.8 port 50011 [preauth]
+Apr 18 08:13:04 tult-0615-foresty sshd[2453]: Failed password for operator from 10.17.10.8 port 50018 ssh2
+Apr 18 08:13:16 tult-0615-foresty sshd[2453]: Connection closed by authenticating user operator 10.17.10.8 port 50018 [preauth]
+Apr 18 08:17:40 tult-0615-foresty sudo:  operator disabled post-incident by IR policy
